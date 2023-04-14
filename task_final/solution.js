@@ -33,21 +33,35 @@
 //    }
 // }
 
+/*
+Определяем функцию для создания объекта data,
+который включает данные о клиенте, о параметрах заказа, о товарных позициях.
+*/
 function sendRequest(name, phone, address, goods, sum) {
-    let data = {goods: [], order: {}};
+    let data = {
+        client: `${name} ${phone}`,
+        order: {
+            address: `ул. ${address.street}, дом ${address.house}, ${address.entrance} подъезд, ${address.floor} этаж, кв. ${address.flat}`,
+            sum
+        },
+        goods: []
+    };
 
+    // Определяем переменную для записи параметра, принимающего количество товарных позиций.
     let countOfGoods = goods.length;
+    // Запускаем формирование объекта для записи товарных позиций в цикле.
+    for (let i = 0; i < countOfGoods; i += 1) {
+        data.goods.push(
+            {
+                title: goods[i].title,
+                count: goods[i].count
+            }
+        );
+    };
 
-    for (let i = 0; i <= countOfGoods; i += 1) {
-        data.goods.push(goods[i].title);
-    }
+    // Определяем переменную для формирования json'а, в котором будет храниться объект data.
+    let jsonData = JSON.stringify({ data });
 
-    data.order.address = address;
-    data.order.sum = name + phone + address + goods + sum;
-
-    data.client = 'Иван';
-
-    let jsonData = JSON.stringify(data);
-
+    // Получаем сформированный на предыдущем шаге json.
     return jsonData;
 }
